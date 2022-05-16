@@ -2,15 +2,24 @@
 # ####################################################################################
 
 from flask import Flask, jsonify
+from .config.config import config_dict
+from src.models import db
 
 # ####################################################################################
 
 
-def create_app():
+def create_app(config=config_dict['development']):
     # instantiate the app
     app = Flask(__name__, instance_relative_config=True)
 
+    app.config.from_object(config)
+
+    # connect the database - mongodb
+    db.app = app
+    db.init_app(app)
+
     # API Index Route
+
     @app.route('/')
     def index():
         return jsonify({
@@ -19,6 +28,3 @@ def create_app():
         })
 
     return app
-
-
-# mongodb+srv://Timothy:<password>@cluster0.db0z1.mongodb.net/myFirstDatabase?retryWrites=true&w=majority

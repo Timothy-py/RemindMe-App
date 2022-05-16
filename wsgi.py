@@ -1,6 +1,7 @@
 from src import create_app
+from src.config.config import config_dict
 
-app = create_app()
+app = create_app(config=config_dict['development'])
 
 if __name__ == "__main__":
     app.run()
