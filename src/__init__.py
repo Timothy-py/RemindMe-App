@@ -4,6 +4,7 @@
 from flask import Flask, jsonify
 from .config.config import config_dict
 from src.models import db
+from src.auth import auth
 
 # ####################################################################################
 
@@ -18,8 +19,10 @@ def create_app(config=config_dict['development']):
     db.app = app
     db.init_app(app)
 
-    # API Index Route
+    # register app handlers
+    app.register_blueprint(auth)
 
+    # API Index Route
     @app.route('/')
     def index():
         return jsonify({
