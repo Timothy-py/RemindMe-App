@@ -19,17 +19,17 @@ def validator(username, email, password):
 
     # validate the payloads
     if len(password) < 6:
-        error.push("Password too short")
+        error.append("Password too short")
 
     if len(username) < 3:
-        error.push("Username too short")
+        error.append("Username too short")
 
     if not username.isalnum() or " " in username:
-        error.push(
+        error.append(
             'Username should not contain spaces and non-alphanumeric character')
 
     if not validators.email(email):
-        error.push('Email is not valid')
+        error.append('Email is not valid')
 
     return error
 
@@ -48,7 +48,7 @@ def signup():
 
     if len(error) > 0:
         return jsonify({
-            'error': validator
+            'error': error
         }), HTTP_400_BAD_REQUEST
 
     # check if the user exist in the db
@@ -64,7 +64,7 @@ def signup():
     new_user = User(
         email=email,
         username=username,
-        password=password
+        password=password_hash
     )
 
     # save to db
