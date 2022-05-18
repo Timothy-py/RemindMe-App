@@ -6,11 +6,17 @@ class Config:
 
 
 class DevConfig(Config):
-    ATLAS_DB_URI = config('ATLAS_DB_URI')
+    MONGODB_SETTINGS = {
+        'host': config('MONGODB_URI'),
+        'connect': False
+    }
 
 
 class ProdConfig(Config):
-    ATLAS_DB_URI = config('ATLAS_DB_URI')
+    MONGODB_SETTINGS = {
+        'host': config('MONGODB_URI'),
+        'connect': False
+    }
 
 
 config_dict = {
