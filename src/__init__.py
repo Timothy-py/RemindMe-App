@@ -5,7 +5,7 @@ from flask import Flask, jsonify
 from .config.config import config_dict
 from src.models import db
 from src.auth import auth
-
+from flask_jwt_extended import JWTManager
 # ####################################################################################
 
 
@@ -18,6 +18,9 @@ def create_app(config=config_dict['development']):
     # connect the database - mongodb
     db.app = app
     db.init_app(app)
+
+    # initialize JWT Manager
+    JWTManager(app=app)
 
     # register app handlers
     app.register_blueprint(auth)

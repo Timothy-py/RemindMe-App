@@ -10,6 +10,7 @@ class DevConfig(Config):
         'host': config('MONGODB_URI'),
         'connect': False
     }
+    JWT_SECRET_KEY = config('JWT_SECRET_KEY')
 
 
 class ProdConfig(Config):
@@ -17,6 +18,7 @@ class ProdConfig(Config):
         'host': config('MONGODB_URI'),
         'connect': False
     }
+    JWT_SECRET_KEY = config('JWT_SECRET_KEY')
 
 
 config_dict = {

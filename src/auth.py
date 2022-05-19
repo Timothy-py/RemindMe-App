@@ -2,7 +2,7 @@
 from flask import Blueprint, jsonify, request, make_response
 from werkzeug.security import check_password_hash, generate_password_hash
 import validators
-from flask_jwt_extended import create_access_token
+from flask_jwt_extended import create_access_token, create_refresh_token
 
 from src.models import User, db
 from src.constants.http_status_codes import HTTP_200_OK, HTTP_400_BAD_REQUEST
@@ -14,6 +14,7 @@ auth = Blueprint('auth', __name__, url_prefix='/api/auth')
 # ############################################################
 
 
+# API parameters validator function
 def validator(username, email, password):
     error = []
 
@@ -33,9 +34,9 @@ def validator(username, email, password):
 
     return error
 
+
+# ############################################################################
 # user signup api
-
-
 @auth.post('/signup')
 def signup():
     # retrieve payloads from request body
@@ -73,4 +74,44 @@ def signup():
     return make_response(jsonify({
         'message': 'User registered successfully',
         'data': new_user
+    }), 200)
+# ############################################################################
+
+
+# ############################################################################
+# User signin API
+@auth.post('/signin')
+def signin():
+    # retrieve payloads from request body
+    email = request.json['email']
+    password = request.json['password']
+
+    # query the db for the email=user
+    user = User.objects(email=email).first()
+    if user is None:
+        return make_response(jsonify({
+            'error': 'Invalid User'
+        }), 404)
+
+    # check if password is correct
+    password_correct = check_password_hash(user.password, password)
+
+    # if password is not correct
+    if password_correct == False:
+        return make_response(jsonify({
+            'error': 'Incorrect password'
+        }), 401)
+
+    # generate token
+    access_token = create_access_token(identity=user.email)
+    refresh_token = create_refresh_token(identity=user.email)
+    # send OK response
+    return make_response(jsonify({
+        'message': 'Logged in successfully',
+        'user': {
+            'username': user.username,
+            'email': email,
+            'access_token': access_token,
+            'refresh_token': refresh_token
+        }
     }), 200)
