@@ -16,7 +16,7 @@ class User(db.Document):
         return "User >>> {self.username}"
 
 
-class DurationUnit():
+class DurationUnit(db.EnumField):
     MINUTES = 'minutes'
     HOURS = 'hours'
     DAYS = 'days'
