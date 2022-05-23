@@ -5,6 +5,7 @@ from flask import Flask, jsonify
 from .config.config import config_dict
 from src.models import db
 from src.auth import auth
+from src.message import message
 from flask_jwt_extended import JWTManager
 # ####################################################################################
 
@@ -24,6 +25,7 @@ def create_app(config=config_dict['development']):
 
     # register app handlers
     app.register_blueprint(auth)
+    app.register_blueprint(message)
 
     # API Index Route
     @app.route('/')
