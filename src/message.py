@@ -1,7 +1,8 @@
+from re import M
 from flask import Blueprint, jsonify, request, make_response
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
-from src.models import User, Message, db
+from src.models import User, Message
 
 
 # configure message Route
@@ -10,13 +11,11 @@ message = Blueprint('message', __name__, url_prefix='/api/message')
 
 # ############################################################################
 # send message API
-@message.post('/message')
+@message.post('/')
 @jwt_required()
-def message():
-    data = {}
+def send_message():
     # get Logged in user id
     user_id = get_jwt_identity()
-    print(user_id)
     # >>>>>>>>>>>>>validate requesst body>>>>>>>>>>>>>
 
     # retrieve payloads from request body
@@ -32,9 +31,12 @@ def message():
     elif duration_unit == 'days':
         duration *= 86400
 
-    # load data object
-    data['title'] = title
-    data['message'] = message
-    data['user'] = user_id
+    # instantiate a new message object
+    new_message = Message(
+        title=title,
+        body=message,
+        duration=duration,
+        user=user_id
+    ).save()
 
-    return make_response(jsonify({data}), 200)
+    return jsonify(message='Message scheduled successfully.'), 201

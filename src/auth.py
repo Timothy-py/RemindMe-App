@@ -4,7 +4,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 import validators
 from flask_jwt_extended import create_access_token, create_refresh_token
 
-from src.models import User, db
+from src.models import User
 from src.constants.http_status_codes import HTTP_200_OK, HTTP_400_BAD_REQUEST
 
 
