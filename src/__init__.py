@@ -18,7 +18,7 @@ def create_app(config=config_dict['development']):
     app.config.from_object(config)
 
     # connect the database - mongodb
-    connect(host='mongodb+srv://Timothy:plati442@cluster0.db0z1.mongodb.net/RemindMe?retryWrites=true&w=majority')
+
     # db.app = app
     # db.init_app(app)
 
