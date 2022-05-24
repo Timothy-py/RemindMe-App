@@ -40,12 +40,14 @@ def validator(username, email, password):
 @auth.post('/signup')
 def signup():
     # retrieve payloads from request body
-    username = request.json['username']
-    email = request.json['email']
-    password = request.json['password']
+    body = request.get_json()
+    # username = request.json['username']
+    # email = request.json['email']
+    # password = request.json['password']
 
     # validate payloads
-    error = validator(username, email, password)
+    error = validator(**body)
+    # error = validator(username, email, password)
 
     if len(error) > 0:
         return jsonify({
@@ -53,27 +55,28 @@ def signup():
         }), HTTP_400_BAD_REQUEST
 
     # check if the user exist in the db
-    if User.objects(email=email).first() is not None:
+    if User.objects(email=body['email']).first() is not None:
         return make_response(jsonify({
             'error': "User already exist",
         }), 409)
 
     # encryp the password string
-    password_hash = generate_password_hash(password)
+    password_hash = generate_password_hash(body['password'])
 
     # instantiate a new user object
-    new_user = User(
-        email=email,
-        username=username,
-        password=password_hash
-    )
+    new_user = User(**body)
+    new_user.password = password_hash
+    # new_user = User(
+    #     email=email,
+    #     username=username,
+    #     password=password_hash
+    # )
 
     # save to db
     new_user = new_user.save()
 
     return make_response(jsonify({
-        'message': 'User registered successfully',
-        'data': new_user
+        'message': 'User registered successfully'
     }), 200)
 # ############################################################################
 
