@@ -1,8 +1,8 @@
-from re import M
-from flask import Blueprint, jsonify, request, make_response
+from flask import Blueprint, jsonify, request
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
-from src.models import User, Message
+from src.models import Message
+from .utility import mailer
 
 
 # configure message Route
@@ -14,6 +14,7 @@ message = Blueprint('message', __name__, url_prefix='/api/message')
 @message.post('/')
 @jwt_required()
 def send_message():
+    data = {}
     # get Logged in user id
     user_id = get_jwt_identity()
     # >>>>>>>>>>>>>validate requesst body>>>>>>>>>>>>>
@@ -31,8 +32,14 @@ def send_message():
     elif duration_unit == 'days':
         duration *= 86400
 
+    data['title'] = title
+    data['message'] = message
+    data['email'] = user_id
+
+    # send mail Function
+
     # instantiate a new message object
-    new_message = Message(
+    Message(
         title=title,
         body=message,
         duration=duration,
