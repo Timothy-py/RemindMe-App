@@ -1,7 +1,9 @@
 from flask_mail import Mail, Message
-import src as app
+from src import create_app
+from src.config.config import config_dict
 
-# integrate Flask Mail
+app = create_app(config=config_dict['development'])
+# # integrate Flask Mail
 mail = Mail(app=app)
 
 
