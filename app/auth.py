@@ -4,8 +4,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 import validators
 from flask_jwt_extended import create_access_token, create_refresh_token
 
-from src.models import User
-from src.constants.http_status_codes import HTTP_200_OK, HTTP_400_BAD_REQUEST
+from .models import User
 
 
 # configure authentication Route
@@ -52,7 +51,7 @@ def signup():
     if len(error) > 0:
         return jsonify({
             'error': error
-        }), HTTP_400_BAD_REQUEST
+        }), 400
 
     # check if the user exist in the db
     if User.objects(email=body['email']).first() is not None:

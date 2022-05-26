@@ -2,11 +2,10 @@
 # ####################################################################################
 
 from flask import Flask, jsonify
-from .config.config import config_dict
-# from src.models import db
+from ..config import config_dict
 from mongoengine import connect
-from src.auth import auth
-from src.message import message
+from .auth import auth
+from .message import message
 from flask_jwt_extended import JWTManager
 # ####################################################################################
 

@@ -1,2 +1,2 @@
-export FLASK_APP=src
+export FLASK_APP=wsgi
 export FLASK_ENV=development

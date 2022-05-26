@@ -1,8 +1,8 @@
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
-from src.models import Message
-
+from .models import Message
+from .utility.mailer import send_mail
 
 # configure message Route
 message = Blueprint('message', __name__, url_prefix='/api/message')
@@ -36,6 +36,7 @@ def send_message():
     data['email'] = user_id
 
     # send mail Function
+    send_mail(data=data)
 
     # instantiate a new message object
     Message(
