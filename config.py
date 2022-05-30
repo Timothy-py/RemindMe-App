@@ -13,18 +13,12 @@ class Config:
 
 
 class DevConfig(Config):
-    MONGODB_SETTINGS = {
-        'host': config('MONGODB_URI'),
-        'connect': False
-    }
+    DB_HOST = config('MONGODB_URI'),
     JWT_SECRET_KEY = config('JWT_SECRET_KEY')
 
 
 class ProdConfig(Config):
-    MONGODB_SETTINGS = {
-        'host': config('MONGODB_URI'),
-        'connect': False
-    }
+    DB_HOST = config('MONGODB_URI'),
     JWT_SECRET_KEY = config('JWT_SECRET_KEY')
     DEBUG = False
 
