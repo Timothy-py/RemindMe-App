@@ -1,7 +1,9 @@
 from flask import Flask
 from flask_mail import Mail, Message
+from ...config import config_dict
 
 app = Flask(__name__)
+app.config.from_object(config_dict['development'])
 
 # integrate Flask Mail
 mail = Mail(app=app)
