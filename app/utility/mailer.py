@@ -1,19 +1,18 @@
+from flask import Flask
 from flask_mail import Mail, Message
 
-from ... import wsgi
-
+app = Flask(__name__)
 
 # integrate Flask Mail
-mail = Mail(app=wsgi.app)
+mail = Mail(app=app)
 
 
 def send_mail(data):
     """
     Function to send emails.
     """
-    with wsgi.app.app_context():
+    with app.app_context():
         msg = Message(subject=data['title'],
-                      sender="admin.ping",
                       recipients=[data['email']])
         msg.body = data['message']
         mail.send(msg)
