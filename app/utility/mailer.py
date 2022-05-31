@@ -4,16 +4,16 @@ from flask_mail import Mail, Message
 
 from ...config import config_dict
 
-app = Flask(__name__)
+application = Flask(__name__)
 config = config_dict['development']
-app.config.from_object(config)
+application.config.from_object(config)
 
 # integrate Flask Mail
-mail = Mail(app=app)
+mail = Mail(app=application)
 
 # setup celery client
-client = Celery(app.name, broker=config.CELERY_BROKER_URL)
-client.conf.update(app.config)
+client = Celery(application.name, broker=config.CELERY_BROKER_URL)
+client.conf.update(application.config)
 
 
 @client.task
@@ -21,8 +21,11 @@ def send_mail(data):
     """
     Function to send emails.
     """
-    with app.app_context():
+    with application.app_context():
         msg = Message(subject=data['title'],
                       recipients=[data['email']])
         msg.body = data['message']
         mail.send(msg)
+
+
+# celery -A RemindMe-App.app.utility.mailer  worker --loglevel=info
