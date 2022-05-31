@@ -1,14 +1,22 @@
+from celery import Celery
 from flask import Flask
 from flask_mail import Mail, Message
+
 from ...config import config_dict
 
 app = Flask(__name__)
-app.config.from_object(config_dict['development'])
+config = config_dict['development']
+app.config.from_object(config)
 
 # integrate Flask Mail
 mail = Mail(app=app)
 
+# setup celery client
+client = Celery(app.name, broker=config.CELERY_BROKER_URL)
+client.conf.update(app.config)
 
+
+@client.task
 def send_mail(data):
     """
     Function to send emails.
