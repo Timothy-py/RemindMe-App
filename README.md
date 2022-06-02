@@ -4,6 +4,10 @@ A Flask App that allow users to set reminders that will be delivered to their em
 
 ## Main API Functionalities
 
+- User signup
+- User signin
+- User schedule message
+
 ## Tech Stacks
 
 - Language - Python
