@@ -2,7 +2,7 @@
 # ####################################################################################
 
 from flask import Flask, jsonify
-from ..config import config_dict
+from config import config_dict
 from mongoengine import connect
 from .auth import auth
 from .message import message

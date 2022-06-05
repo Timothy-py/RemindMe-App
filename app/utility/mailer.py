@@ -2,7 +2,7 @@ from celery import Celery
 from flask import Flask
 from flask_mail import Mail, Message
 
-from ...config import config_dict
+from config import config_dict
 
 application = Flask(__name__)
 config = config_dict['development']

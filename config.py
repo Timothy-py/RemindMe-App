@@ -16,7 +16,7 @@ class DevConfig(Config):
     DB_HOST = config('MONGODB_URI'),
     JWT_SECRET_KEY = config('JWT_SECRET_KEY')
     CELERY_BROKER_URL = config('CELERY_BROKER_URL')
-    CELERY_RESULT_BACKEND = config('CELERY_RESULT_BACKEND')
+    RESULT_BACKEND = config('RESULT_BACKEND')
 
 
 class ProdConfig(Config):
