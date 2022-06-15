@@ -33,7 +33,7 @@ def send_message():
 
     data['title'] = title
     data['message'] = message
-    data['email'] = 'digitim33@gmail.com'
+    data['email'] = user_id
 
     # send mail Function
     send_mail.apply_async(args=[data], countdown=duration)
@@ -43,7 +43,7 @@ def send_message():
         title=title,
         body=message,
         duration=duration,
-        user='digitim33@gmail.com'
+        user=user_id
     ).save()
 
     return jsonify(message='Message scheduled successfully.'), 201
