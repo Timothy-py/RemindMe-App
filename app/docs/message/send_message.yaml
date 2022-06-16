@@ -1,0 +1,40 @@
+Endpoint for a logged in user to schedule a message
+---
+tags:
+  - Message
+
+parameters:
+  - in: header
+    name: Authorization
+    required: true
+  - name: body
+    description: The body should contain the details of the message to schedule
+    in: body
+    required: true
+    schema:
+      type: object
+      required:
+        - "title"
+        - "message"
+        - "duration_unit"
+        - "duration"
+      properties:
+        title:
+          type: "string"
+          example: "Watch Tutorial"
+        message:
+          type: "string"
+          example: "Watch Youtube tutorial on how to create serverless functions with AWS Lambda"
+        duration_unit:
+          type: "string"
+          example: "minutes/hours/days"
+        duration:
+          type: "integer"
+          example: "4"
+
+responses:
+  201:
+    description: Message scheduled Successfully
+
+  500:
+    description: Internal server error

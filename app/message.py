@@ -1,5 +1,6 @@
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import jwt_required, get_jwt_identity
+from flasgger import swag_from
 
 from .models import Message
 from .utility.mailer import send_mail
@@ -12,6 +13,7 @@ message = Blueprint('message', __name__, url_prefix='/api/message')
 # send message API
 @message.post('/')
 @jwt_required()
+@swag_from('./docs/message/send_message.yaml')
 def send_message():
     data = {}
     # get Logged in user id

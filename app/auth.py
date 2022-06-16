@@ -2,6 +2,7 @@
 from flask import Blueprint, jsonify, request, make_response
 from werkzeug.security import check_password_hash, generate_password_hash
 import validators
+from flasgger import swag_from
 from flask_jwt_extended import create_access_token, create_refresh_token
 
 from .models import User
@@ -37,6 +38,7 @@ def validator(username, email, password):
 # ############################################################################
 # user signup api
 @auth.post('/signup')
+@swag_from('./docs/auth/signup.yaml')
 def signup():
     # retrieve payloads from request body
     body = request.get_json()
@@ -83,6 +85,7 @@ def signup():
 # ############################################################################
 # User signin API
 @auth.post('/signin')
+@swag_from('./docs/auth/signin.yaml')
 def signin():
     # retrieve payloads from request body
     email = request.json['email']

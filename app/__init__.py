@@ -2,11 +2,14 @@
 # ####################################################################################
 
 from flask import Flask, jsonify
-from config import config_dict
+from flask_jwt_extended import JWTManager
 from mongoengine import connect
+from flasgger import Swagger, swag_from
+
+from config import config_dict
+from swagger import template, swagger_config
 from .auth import auth
 from .message import message
-from flask_jwt_extended import JWTManager
 # ####################################################################################
 
 
@@ -18,8 +21,6 @@ def create_app(config=config_dict['development']):
 
     # connect the database - mongodb
     connect(host=config.DB_HOST)
-    # db.app = app
-    # db.init_app(app)
 
     # initialize JWT Manager
     JWTManager(app=app)
@@ -28,12 +29,16 @@ def create_app(config=config_dict['development']):
     app.register_blueprint(auth)
     app.register_blueprint(message)
 
+    # configure swagger
+    Swagger(app=app, config=swagger_config, template=template)
+
     # API Index Route
     @app.route('/')
+    @swag_from('./docs/index.yaml')
     def index():
         return jsonify({
             'message': 'RemindMe App',
             'description': 'A Flask App that allow users to set reminders that will be delivered to their emails at a set time.'
-        })
+        }), 200
 
     return app
