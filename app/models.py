@@ -1,6 +1,6 @@
 # from flask_mongoengine import MongoEngine
 from datetime import datetime
-from mongoengine import StringField, EmailField, DateTimeField, ReferenceField, Document, IntField
+from mongoengine import StringField, EmailField, DateTimeField, ReferenceField, Document, IntField, CASCADE
 
 # instantiate mongodb
 # db = MongoEngine()
@@ -27,6 +27,7 @@ class Message(Document):
     body = StringField()
     start_datetime = DateTimeField(default=datetime.utcnow)
     duration = IntField(required=True)
+    # user = ReferenceField('User', reverse_delete_rule=CASCADE)
     user = ReferenceField(User)
 
     def __repr__(self):

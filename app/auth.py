@@ -3,7 +3,8 @@ from flask import Blueprint, jsonify, request, make_response
 from werkzeug.security import check_password_hash, generate_password_hash
 import validators
 from flasgger import swag_from
-from flask_jwt_extended import create_access_token, create_refresh_token
+from flask_jwt_extended import create_access_token, create_refresh_token, JWTManager
+import json
 
 from .models import User
 
@@ -93,6 +94,7 @@ def signin():
 
     # query the db for the email=user
     user = User.objects(email=email).first()
+
     if user is None:
         return make_response(jsonify({
             'error': 'Invalid User'
@@ -107,6 +109,12 @@ def signin():
             'error': 'Incorrect password'
         }), 401)
 
+    # @JWTManager.user_identity_loader
+    # def user_identity(user):
+    #     return user.id
+
+    # user_identity(user.id)
+    print("THIS IS THE USER- {}".format(user))
     # generate token
     access_token = create_access_token(identity=user.email)
     refresh_token = create_refresh_token(identity=user.email)

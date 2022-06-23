@@ -30,7 +30,7 @@ parameters:
           example: "minutes/hours/days"
         duration:
           type: "integer"
-          example: "4"
+          example: 4
 
 responses:
   201:
