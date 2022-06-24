@@ -17,7 +17,7 @@ template = {
         "https"
     ],
     "securityDefinitions": {
-        "Bearer": {
+        "Authorization": {
             "type": "apiKey",
             "name": "Authorization",
             "in": "header",

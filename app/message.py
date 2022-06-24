@@ -13,7 +13,7 @@ message = Blueprint('message', __name__, url_prefix='/api/message')
 # send message API
 @message.post('/')
 @jwt_required()
-# @swag_from('./docs/message/send_message.yaml')
+@swag_from('./docs/message/send_message.yaml')
 def send_message():
     data = {}
     # get Logged in user id

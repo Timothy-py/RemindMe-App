@@ -2,11 +2,9 @@ Endpoint for a logged in user to schedule a message
 ---
 tags:
   - Message
-
+security:
+  - Authorization: []
 parameters:
-  - in: header
-    name: Authorization
-    required: true
   - name: body
     description: The body should contain the details of the message to schedule
     in: body
