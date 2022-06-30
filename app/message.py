@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, make_response
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from flasgger import swag_from
 
@@ -49,3 +49,27 @@ def send_message():
     ).save()
 
     return jsonify(message='Message scheduled successfully.'), 201
+
+
+# ############################################################################
+# fetch my messages
+@message.get('/')
+# @jwt_required()
+@swag_from('./docs/message/fetch_message.yaml')
+def fetch_message():
+    # get Logged in user
+    # user_id = get_jwt_identity()
+
+    try:
+        messages = Message.objects.all()
+    except Exception as error:
+        return jsonify({
+            'message': 'An error occured',
+            'error': error
+        })
+    else:
+        print(messages)
+        return make_response(jsonify({
+            'message': 'All your messages fetched successfully',
+            'data': messages
+        }), 200)
