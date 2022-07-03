@@ -1,6 +1,7 @@
 # from flask_mongoengine import MongoEngine
 from datetime import datetime
 from mongoengine import StringField, EmailField, DateTimeField, ReferenceField, Document, IntField, CASCADE
+from marshmallow import Schema, fields, validate
 
 # instantiate mongodb
 # db = MongoEngine()
@@ -32,3 +33,13 @@ class Message(Document):
 
     def __repr__(self):
         return "Title >>> {self.title}"
+
+
+class MessageSchema(Schema):
+    title = fields.Str(required=True)
+    body = fields.Str(required=True)
+    start_datetime = fields.DateTime(required=True)
+    duration = fields.Int(required=True)
+    duration_unit = fields.Str(
+        required=True, validate=validate.OneOf(['minutes', 'hours', 'days']))
+    # user = fields.Str(required=True)

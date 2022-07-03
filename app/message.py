@@ -1,8 +1,9 @@
 from flask import Blueprint, jsonify, request, make_response
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from flasgger import swag_from
+import json
 
-from .models import Message
+from .models import Message, MessageSchema
 from .utility.mailer import send_mail
 
 # configure message Route
@@ -62,14 +63,19 @@ def fetch_message():
 
     try:
         messages = Message.objects.all()
+
+        serializer = MessageSchema(many=True)
+
+        data = serializer.dump(messages)
+
     except Exception as error:
         return jsonify({
             'message': 'An error occured',
             'error': error
         })
+
     else:
-        print(messages)
         return make_response(jsonify({
             'message': 'All your messages fetched successfully',
-            'data': messages
+            'data': data
         }), 200)
