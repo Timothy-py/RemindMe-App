@@ -6,7 +6,7 @@ from flasgger import swag_from
 from flask_jwt_extended import create_access_token, create_refresh_token, JWTManager
 import json
 
-from .models import User
+from .models import User, UserSchema
 
 
 # configure authentication Route
@@ -109,20 +109,19 @@ def signin():
             'error': 'Incorrect password'
         }), 401)
 
-    # @JWTManager.user_identity_loader
-    # def user_identity(user):
-    #     return user.id
+    serializer = UserSchema()
+    data = serializer.dump(user)
 
-    # user_identity(user.id)
-    print("THIS IS THE USER- {}".format(user))
     # generate token
-    access_token = create_access_token(identity=user.email)
-    refresh_token = create_refresh_token(identity=user.email)
+    access_token = create_access_token(identity=data['id'])
+    refresh_token = create_refresh_token(identity=data['id'])
+
     # send OK response
     return make_response(jsonify({
         'message': 'Logged in successfully',
         'user': {
-            'username': user.username,
+            'id': data['id'],
+            'username': data['id'],
             'email': email,
             'access_token': access_token,
             'refresh_token': refresh_token

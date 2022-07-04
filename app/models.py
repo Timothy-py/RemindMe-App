@@ -17,10 +17,11 @@ class User(Document):
         return "User >>> {self.username}"
 
 
-# class DurationUnit(db.EnumField):
-#     MINUTES = 'minutes'
-#     HOURS = 'hours'
-#     DAYS = 'days'
+class UserSchema(Schema):
+    id = fields.Str()
+    username = fields.Str(required=True)
+    email = fields.Email(required=True)
+    password = fields.Str(required=True)
 
 
 class Message(Document):
@@ -36,10 +37,11 @@ class Message(Document):
 
 
 class MessageSchema(Schema):
+    id = fields.Str()
     title = fields.Str(required=True)
     body = fields.Str(required=True)
     start_datetime = fields.DateTime(required=True)
     duration = fields.Int(required=True)
     duration_unit = fields.Str(
         required=True, validate=validate.OneOf(['minutes', 'hours', 'days']))
-    # user = fields.Str(required=True)
+    # user = fields.Nested("User")
