@@ -67,7 +67,7 @@ def fetch_message():
     user_id = get_jwt_identity()
 
     try:
-        messages = Message.objects.all()
+        messages = Message.objects(user=user_id).all()
 
         serializer = MessageSchema(many=True)
 
