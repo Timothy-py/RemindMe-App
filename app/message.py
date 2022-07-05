@@ -1,9 +1,8 @@
 from flask import Blueprint, jsonify, request, make_response
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from flasgger import swag_from
-import json
 
-from .models import Message, MessageSchema
+from .models import Message, MessageSchema, User, UserSchema
 from .utility.mailer import send_mail
 
 # configure message Route
@@ -21,6 +20,12 @@ def send_message():
     user_id = get_jwt_identity()
     # >>>>>>>>>>>>>validate requesst body>>>>>>>>>>>>>
 
+    # query the db for the user=user_id
+    user = User.objects(id=user_id).first()
+
+    serializer = UserSchema()
+    user_data = serializer.dump(user)
+
     # retrieve payloads from request body
     title = request.json['title']
     message = request.json['message']
@@ -36,7 +41,7 @@ def send_message():
 
     data['title'] = title
     data['message'] = message
-    data['email'] = user_id
+    data['email'] = user_data['email']
 
     # send mail Function
     send_mail.apply_async(args=[data], countdown=duration)
@@ -55,11 +60,11 @@ def send_message():
 # ############################################################################
 # fetch my messages
 @message.get('/')
-# @jwt_required()
+@jwt_required()
 @swag_from('./docs/message/fetch_message.yaml')
 def fetch_message():
     # get Logged in user
-    # user_id = get_jwt_identity()
+    user_id = get_jwt_identity()
 
     try:
         messages = Message.objects.all()
