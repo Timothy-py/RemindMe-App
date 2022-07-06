@@ -1,0 +1,12 @@
+Endpoint for a logged in user to fetch all her scheduled messages
+---
+tags:
+  - Message
+security:
+  - Authorization: []
+
+responses:
+  200:
+    description: All your messages fetched successfully
+  500:
+    description: An error occured

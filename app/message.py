@@ -77,7 +77,7 @@ def fetch_message():
         return jsonify({
             'message': 'An error occured',
             'error': error
-        })
+        }), 500
 
     else:
         return make_response(jsonify({
