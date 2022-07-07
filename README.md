@@ -11,6 +11,7 @@ A Flask App that allow users to set reminders that will be delivered to their em
 - User signup
 - User signin
 - User schedule message
+- Fetch logged in User messages
 
 ## Tech Stacks
 
