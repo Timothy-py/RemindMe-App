@@ -44,7 +44,9 @@ def send_message():
     data['email'] = user_data['email']
 
     # send mail Function
-    send_mail.apply_async(args=[data], countdown=duration)
+    send_mail.apply_async(
+        args=[data], countdown=duration, ignore_result=False)
+    # print(result.get())
 
     # instantiate a new message object
     Message(
