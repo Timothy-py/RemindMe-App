@@ -43,18 +43,22 @@ def send_message():
     data['message'] = message
     data['email'] = user_data['email']
 
-    # send mail Function
-    send_mail.apply_async(
-        args=[data], countdown=duration, ignore_result=False)
-    # print(result.get())
-
-    # instantiate a new message object
-    Message(
+    # instantiate a new message object and commit it to DB
+    msg_data = Message(
         title=title,
         body=message,
         duration=duration,
-        user=user_id
+        user=user_id,
+        status='PENDING'
     ).save()
+
+    serializer = MessageSchema()
+    data_obj = serializer.dump(msg_data)
+    data['id'] = data_obj['id']
+
+    # send mail Function
+    send_mail.apply_async(
+        args=[data], countdown=duration, ignore_result=False)
 
     return jsonify(message='Message scheduled successfully.'), 201
 
@@ -86,3 +90,19 @@ def fetch_message():
             'message': 'All your messages fetched successfully',
             'data': data
         }), 200)
+
+
+@message.patch('/<string:id>')
+def update(id):
+    try:
+        Message.objects(id=id).update_one(set__status='SUCCEEDED')
+    except Exception as error:
+        print(error)
+        return jsonify({
+            'message': 'An error occured',
+            'error': error
+        }), 500
+    else:
+        return make_response(jsonify({
+            'message': 'Updated successfully'
+        }), 204)

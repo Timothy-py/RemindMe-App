@@ -31,6 +31,7 @@ class Message(Document):
     duration = IntField(required=True)
     # user = ReferenceField('User', reverse_delete_rule=CASCADE)
     user = ReferenceField(User)
+    status = StringField()
 
     def __repr__(self):
         return "Title >>> {self.title}"
@@ -44,4 +45,6 @@ class MessageSchema(Schema):
     duration = fields.Int(required=True)
     duration_unit = fields.Str(
         required=True, validate=validate.OneOf(['minutes', 'hours', 'days']))
+    status = fields.Str(
+        required=True, validate=validate.OneOf(['PENDING', 'SUCCEEDED', 'FAILED']))
     # user = fields.Nested("User")

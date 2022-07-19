@@ -2,6 +2,7 @@ from itertools import chain
 from celery import Celery
 from flask import Flask
 from flask_mail import Mail, Message
+from ..models import Message as Msg
 
 from config import config_dict
 
@@ -23,6 +24,8 @@ def send_mail(data):
     """
     Function to send emails.
     """
+    # Msg.objects(id=data['id']).update_one(set__status='SUCCEEDED')
+
     with application.app_context():
         msg = Message(subject=data['title'],
                       recipients=[data['email']])
@@ -30,9 +33,9 @@ def send_mail(data):
         mail.send(msg)
 
 
-Celery.control.revoke(
-    [scheduled["request"]["id"] for scheduled in chain.from_iterable(
-        Celery.control.inspect().scheduled().itervalues())]
-)
+# Celery.control.revoke(
+#     [scheduled["request"]["id"] for scheduled in chain.from_iterable(
+#         Celery.control.inspect().scheduled().itervalues())]
+# )
 
 # celery -A RemindMe-App.app.utility.mailer  worker --loglevel=info
