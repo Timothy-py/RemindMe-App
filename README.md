@@ -17,6 +17,7 @@ A Flask App that allow users to set reminders that will be delivered to their em
 
 - Language - Python
 - Web Server - Flask
+- Database - MongoDB
 - Task Queue - Celery
 - Message Broker - Redis
 - Monitoring Tool - Flower

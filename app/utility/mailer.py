@@ -1,4 +1,3 @@
-from itertools import chain
 from celery import Celery
 from flask import Flask
 from flask_mail import Mail, Message
