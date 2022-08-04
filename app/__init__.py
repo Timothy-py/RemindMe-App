@@ -15,9 +15,10 @@ from .message import message
 
 
 def create_app(config=config_dict['development']):
+    # configure logging
     dictConfig({
         'version': 1,
-        'formatters': {'default', {
+        'formatters': {'default': {
             'format': '[%(asctime)s] %(levelname)s in %(module)s: %(message)s',
         }},
         'handlers': {'wsgi': {
