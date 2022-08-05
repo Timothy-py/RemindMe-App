@@ -3,10 +3,10 @@ from flask import Blueprint, jsonify, request, make_response
 from werkzeug.security import check_password_hash, generate_password_hash
 import validators
 from flasgger import swag_from
-from flask_jwt_extended import create_access_token, create_refresh_token, JWTManager
-import json
+from flask_jwt_extended import create_access_token, create_refresh_token
 
 from .models import User, UserSchema
+from .utility.logger import logger
 
 
 # configure authentication Route
@@ -76,6 +76,7 @@ def signup():
 
     # save to db
     new_user = new_user.save()
+    logger.info(f"User - {body['email']} registered successfully")
 
     return make_response(jsonify({
         'message': 'User registered successfully'
@@ -115,6 +116,8 @@ def signin():
     # generate token
     access_token = create_access_token(identity=data['id'])
     refresh_token = create_refresh_token(identity=data['id'])
+
+    logger.info(f"User - {email} log in successfully")
 
     # send OK response
     return make_response(jsonify({
