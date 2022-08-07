@@ -4,6 +4,7 @@ from flasgger import swag_from
 
 from .models import Message, MessageSchema, User, UserSchema
 from .utility.mailer import send_mail
+from .utility.logger import logger
 
 # configure message Route
 message = Blueprint('message', __name__, url_prefix='/api/message')
@@ -51,6 +52,7 @@ def send_message():
         user=user_id,
         status='PENDING'
     ).save()
+    logger.info(f"New message saved to DB by user - {user_data['email']}")
 
     serializer = MessageSchema()
     data_obj = serializer.dump(msg_data)
@@ -80,12 +82,14 @@ def fetch_message():
         data = serializer.dump(messages)
 
     except Exception as error:
+        logger.error(f"Unable to retrieve User-{user_id} messages: {error}")
         return jsonify({
             'message': 'An error occured',
             'error': error
         }), 500
 
     else:
+        logger.info(f"All messages for User-{user_id} retrieved successfully")
         return make_response(jsonify({
             'message': 'All your messages fetched successfully',
             'data': data

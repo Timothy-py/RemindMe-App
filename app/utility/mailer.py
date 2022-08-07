@@ -1,8 +1,8 @@
 from celery import Celery
 from flask import Flask
 from flask_mail import Mail, Message
-from ..models import Message as Msg
 
+from .logger import logger
 from config import config_dict
 
 application = Flask(__name__)
@@ -30,6 +30,8 @@ def send_mail(data):
                       recipients=[data['email']])
         msg.body = data['message']
         mail.send(msg)
+        logger.info(
+            f"Scheduled message by user - {data['email']} sent successfully")
 
 
 # Celery.control.revoke(
