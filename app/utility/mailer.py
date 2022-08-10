@@ -2,14 +2,14 @@ from celery import Celery
 from flask import Flask
 from flask_mail import Mail, Message
 
-import app as application
+# import app as application
 from ..models import Message as Msg
 from .logger import logger
 from config import config_dict
 
-# application = Flask(__name__)
+application = Flask(__name__)
 config = config_dict['development']
-# application.config.from_object(config)
+application.config.from_object(config)
 
 # integrate Flask Mail
 mail = Mail(app=application)
