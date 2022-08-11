@@ -22,3 +22,15 @@ class AuthTestCase(unittest.TestCase):
 
         # create a test client for this app
         self.client = self.app.test_client()
+
+    # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    def tearDown(self):
+        """
+        destroy the test environment
+        """
+
+        # remove the app context
+        self.appctx.pop()
+
+        self.app = None
+        self.client = None
