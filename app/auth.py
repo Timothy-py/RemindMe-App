@@ -80,7 +80,7 @@ def signup():
 
     return make_response(jsonify({
         'message': 'User registered successfully'
-    }), 200)
+    }), 201)
 # ############################################################################
 
 
