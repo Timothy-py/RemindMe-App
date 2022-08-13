@@ -25,7 +25,16 @@ class ProdConfig(Config):
     DEBUG = False
 
 
+class TestConfig(Config):
+    TESTING = True
+    DB_HOST = config('LOCAL_DB')
+    JWT_SECRET_KEY = config('JWT_SECRET_KEY')
+    CELERY_BROKER_URL = config('CELERY_BROKER_URL')
+    RESULT_BACKEND = config('RESULT_BACKEND')
+
+
 config_dict = {
     'development': DevConfig,
-    'production': ProdConfig
+    'production': ProdConfig,
+    'testing': TestConfig
 }
