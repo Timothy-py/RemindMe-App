@@ -2,6 +2,7 @@ import unittest
 from .. import create_app
 from config import config_dict
 from ..models import User
+from werkzeug.security import generate_password_hash
 
 
 class AuthTestCase(unittest.TestCase):
@@ -34,3 +35,22 @@ class AuthTestCase(unittest.TestCase):
 
         self.app = None
         self.client = None
+
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+
+def test_user_signup(self):
+    data = {
+        "username": "testuser",
+        "email": "testuser@gmail.com",
+        "password": 'auth123'
+    }
+
+    response = self.client.post('/api/auth/signup', json=data)
+
+    user = User.objects(email="testuser@gmail.com").first()
+    print(user)
+
+    assert user.email == "testuser@gmail.com"
+
+    assert response.status_code == 201
