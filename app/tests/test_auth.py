@@ -36,21 +36,20 @@ class AuthTestCase(unittest.TestCase):
         self.app = None
         self.client = None
 
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
+    def test_user_signup(self):
+        data = {
+            "username": "testuser",
+            "email": "testuser@gmail.com",
+            "password": 'auth123'
+        }
 
-def test_user_signup(self):
-    data = {
-        "username": "testuser",
-        "email": "testuser@gmail.com",
-        "password": 'auth123'
-    }
+        response = self.client.post('/api/auth/signup', json=data)
 
-    response = self.client.post('/api/auth/signup', json=data)
+        user = User.objects(email="testuser@gmail.com").first()
+        print(user)
 
-    user = User.objects(email="testuser@gmail.com").first()
-    print(user)
+        assert user.email == "testuser@gmail.com"
 
-    assert user.email == "testuser@gmail.com"
-
-    assert response.status_code == 201
+        assert response.status_code == 201
