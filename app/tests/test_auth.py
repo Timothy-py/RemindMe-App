@@ -49,6 +49,19 @@ class AuthTestCase(unittest.TestCase):
 
         user = User.objects(email="testuser@gmail.com").first()
 
-        assert user.email == "testuser@gmail.com"
+        assert user.email == data['email']
 
         # assert response.status_code == 201
+
+    # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+    def test_user_signin(self):
+        data = {
+            "email": "testuser@gmail.com",
+            "password": "auth12"
+        }
+
+        response = self.client.post('/api/auth/signin', json=data)
+        print(response)
+
+        assert response.status_code == 401
